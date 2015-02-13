@@ -10,6 +10,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from django.contrib.auth.models import User
+from datetime import datetime
 
 def index(request):
    
@@ -18,13 +19,40 @@ def index(request):
 
     page_list = Page.objects.order_by('-views')[:5]
     context_dict['pages'] = page_list
+    
+
+    visits = request.session.get('visits')
+    if not visits:
+        visits = 1
+    reset_last_visit_time = False
+
+    last_visit = request.session.get('last_visit')
+    if last_visit:
+        last_visit_time = datetime.strptime(last_visit[:-7], "%Y-%m-%d %H:%M:%S")
+
+        if (datetime.now() - last_visit_time).days > 0:
+            visits = visits + 1
+            reset_last_visit_time = True
+    else:
+        reset_last_visit_time = True
+
+    if reset_last_visit_time:
+        request.session['last_visit'] = str(datetime.now())
+        request.session['visits'] = visits
+    context_dict['visits'] = visits
 
 
-    return render(request, 'rango/index.html', context_dict)
+    response = render(request,'rango/index.html', context_dict)
+
+    return response
 
 	
 def about(request):
-    return render(request, 'rango/about.html')
+    if request.session.get('visits'):
+        count = request.session.get('visits')
+    else:
+        count = 0
+    return render(request, 'rango/about.html', {'visits': count})
 
 def category(request, category_name_slug):
 
