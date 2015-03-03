@@ -5,6 +5,7 @@ from rango.models import Page
 from rango.forms import CategoryForm
 from rango.forms import PageForm
 from rango.forms import UserForm, UserProfileForm
+from rango.bing_search import run_query
 from django.contrib.auth import authenticate, login
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.decorators import login_required
@@ -119,6 +120,18 @@ def add_page(request, category_name_slug):
 
     context_dict = {'form':form, 'category':cat, 'failedURL':category_name_slug}
     return render(request, 'rango/add_page.html', context_dict)
+
+def search(request):
+
+    result_list = []
+
+    if request.method == 'POST':
+        query = request.POST['query'].strip()
+
+        if query:
+            result_list = run_query(query)
+
+    return render(request, 'rango/search.html', {'result_list': result_list})
 
 
 ##def register(request):
