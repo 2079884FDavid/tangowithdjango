@@ -20,7 +20,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 SECRET_KEY = ')vo$kon5r(m)w!cx)t@p8-+$6#8(*s1laqa76qt!a*v(rydf=t'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 TEMPLATE_DEBUG = True
 
@@ -30,7 +30,7 @@ TEMPLATE_DIRS = [
     TEMPLATE_PATH,
     ]
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['2079884fdavid.pythonanywhere.com']
 
 
 # Application definition
@@ -86,11 +86,11 @@ USE_TZ = True
 
 
 #Registration stuff
-REGISTRATION_OPEN = True                
-ACCOUNT_ACTIVATION_DAYS = 7 
+REGISTRATION_OPEN = True
+ACCOUNT_ACTIVATION_DAYS = 7
 REGISTRATION_AUTO_LOGIN = True
 LOGIN_REDIRECT_URL = '/rango/'
-LOGIN_URL = '/accounts/login/'  
+LOGIN_URL = '/accounts/login/'
 
 
 # Static files (CSS, JavaScript, Images)
